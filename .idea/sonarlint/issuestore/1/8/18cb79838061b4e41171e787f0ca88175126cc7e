@@ -1,26 +1,0 @@
-
-b	java:S101"MRename this class name to match the regular expression '^[A-Z][a-zA-Z0-9]*$'.(Ú¢º‚
-R
-java:S4973•"<Strings and Boxed types should be compared using "equals()".(ü™Ûq
-b
-java:S2095P"GUse try-with-resources or close this "CSVReader" in a "finally" clause.(ÛòŸ«ýÿÿÿÿ
-A
-java:S1948"+Make "movieRest" transient or serializable.(€’¿×
-S
-java:S1854-"8Remove this useless assignment to local variable "form".(ìïáïûÿÿÿÿ
-D
-java:S1481-")Remove this unused "form" local variable.(ìïáïûÿÿÿÿ
-Ž
-java:S1130N"xRemove the declaration of thrown exception 'java.io.FileNotFoundException' which is a subclass of 'java.io.IOException'.(ÃºË
-N	java:S106`"9Replace this use of System.out or System.err by a logger.(ÅÞ§
-h	java:S100d"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ºñÊÓüÿÿÿÿ
-3
-java:S2119e"Save and re-use this "Random".(¼ÝÅf
-6	java:S131j""Add a default case to this switch.(ìúÇV
-T	java:S106—"9Replace this use of System.out or System.err by a logger.(ÞÆ­Ûþÿÿÿÿ
-V	java:S106¯"9Replace this use of System.out or System.err by a logger.(ˆË€š8ÙÍ“ñ‡0
-[	java:S106´"9Replace this use of System.out or System.err by a logger.(¢ÔóÝþÿÿÿÿ8èŒÑ…ˆ0
-@
-java:S1068"*Remove this unused "movie2" private field.(ÂÍÉð
-E
-java:S1068"*Remove this unused "movie3" private field.(²–ÝÝûÿÿÿÿ

@@ -10,8 +10,9 @@ public class userForm extends JFrame implements ActionListener {
     private JLabel lblNombre;
     private JTextField nombre;
     private JButton btnAgregar;
-    private JButton btnSalir;
     private JPanel userPanel;
+    private JComboBox comboBox1;
+    private JButton selecciona;
 
     public userForm(){
         this.setContentPane(userPanel);

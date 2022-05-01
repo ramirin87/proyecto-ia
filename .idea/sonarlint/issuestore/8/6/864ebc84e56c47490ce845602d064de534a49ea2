@@ -1,7 +1,0 @@
-
-g	java:S101	"MRename this class name to match the regular expression '^[A-Z][a-zA-Z0-9]*$'.(ÓÇÆ½þÿÿÿÿ
-C
-java:S1068
-"-Remove this unused "lblNombre" private field.(Ž‹ÏŸ
-B
-java:S1068",Remove this unused "btnSalir" private field.(µ¼û˜

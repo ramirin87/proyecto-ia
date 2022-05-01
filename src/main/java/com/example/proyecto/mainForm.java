@@ -36,10 +36,17 @@ public class mainForm extends JFrame implements ActionListener {
     private JComboBox<String> puntos1;
     private JComboBox<String> puntos2;
     private JComboBox<String> puntos3;
+    private JButton enviar1;
+    private JButton enviar2;
+    private JButton enviar3;
     private JMenuItem crearUsuario;
     private JMenuItem buscar;
+    private JMenuItem recomend;
     private JMenuBar topBar;
     private JMenu userMenu;
+    private JMenu recomendacion;
+    private JMenu buscarTop;
+    private JMenu userTop;
 
     public static void main(String[] args) {
         mainForm form = new mainForm();
@@ -49,17 +56,29 @@ public class mainForm extends JFrame implements ActionListener {
         movieRest = new MovieInfoConsumer();
         setContentPane(mainPanel);
         setTitle("Proyecto IA Grupo 4");
-        setSize(1000,600);
+        setSize(1200,700);
         movie1.setSize(300,550);
         topBar = new JMenuBar();
         userMenu = new JMenu("Usuarios");
+        buscarTop = new JMenu("Buscar");
+        userTop = new JMenu("sin usuario");
+        userTop.addSeparator();
+        buscarTop.addActionListener(this);
+        recomendacion = new JMenu("Motor");
+        recomendacion.addActionListener(this);
         crearUsuario = new JMenuItem("Crear usuario");
-        buscar = new JMenuItem("Buscar");
+        buscar = new JMenuItem("Buscar Título");
+        recomend = new JMenuItem("Generar Recomedación");
         crearUsuario.addActionListener(this);
         buscar.addActionListener(this);
+        recomendacion.add(recomend);
         userMenu.add(crearUsuario);
-        userMenu.add(buscar);
+        buscarTop.add(buscar);
         topBar.add(userMenu);
+        topBar.add(buscarTop);
+        topBar.add(recomendacion);
+        topBar.add(Box.createHorizontalGlue());
+        topBar.add(userTop);
         this.setJMenuBar(topBar);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true); JFileChooser chooser = new JFileChooser();
@@ -121,6 +140,7 @@ public class mainForm extends JFrame implements ActionListener {
                         setMovieArea(path,posterArea2,puntos2,title2,genres2,movie);
 
                     } catch (Exception exp) {
+
                         exp.printStackTrace();
                     }
                     break;
@@ -176,7 +196,7 @@ public class mainForm extends JFrame implements ActionListener {
             new userForm();
         }
 
-        if (e.getSource() == buscar) {
+        if (e.getSource() == buscarTop) {
             System.out.println("Buscar");
             new searchForm();
         }

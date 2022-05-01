@@ -33,6 +33,8 @@ public class searchForm extends JFrame implements ActionListener {
         movieRest = new MovieInfoConsumer();
         this.setTitle("Buscar");
         this.setSize(650,800);
+        posterArea1.setSize(180,250);
+
         this.setVisible(true);
         this.buscar.addActionListener(this);
         ManagerMovie.getInstance().movies.stream().sorted(Comparator

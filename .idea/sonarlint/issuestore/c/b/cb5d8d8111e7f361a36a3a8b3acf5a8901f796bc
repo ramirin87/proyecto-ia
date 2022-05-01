@@ -1,0 +1,10 @@
+
+b	java:S101"MRename this class name to match the regular expression '^[A-Z][a-zA-Z0-9]*$'.(á¯û»
+A
+java:S1948"+Make "movieRest" transient or serializable.(ÿêÍ¨
+B
+java:S1602'",Remove useless curly braces around statement(µè÷ó
+Z	java:S106I"9Replace this use of System.out or System.err by a logger.(ŞÆ­Ûşÿÿÿÿ8ó±¸…ˆ0
+Z	java:S106_"9Replace this use of System.out or System.err by a logger.(ı™øøÿÿÿÿ8ù±¸…ˆ0
+M
+java:S1068"0Remove this unused "enviarPuntos" private field.(Óùšä8Ô”Â…ˆ0

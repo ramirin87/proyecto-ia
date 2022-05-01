@@ -1,0 +1,7 @@
+
+g
+java:S2095"LUse try-with-resources or close this "BufferedWriter" in a "finally" clause.(Áø’ûÿÿÿÿ
+P
+java:S1118
+":Add a private constructor to hide the implicit public one.(¼Øûì
+h	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(•Ê•ñşÿÿÿÿ

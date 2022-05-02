@@ -193,12 +193,13 @@ public class mainForm extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == crearUsuario) {
             System.out.println("Crear nuevo usuario");
-            new userForm();
+            new userForm(this.userTop);
         }
 
-        if (e.getSource() == buscarTop) {
+        if (e.getSource() == buscar) {
             System.out.println("Buscar");
             new searchForm();
         }
     }
+
 }

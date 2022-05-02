@@ -33,7 +33,7 @@ public class searchForm extends JFrame implements ActionListener {
         movieRest = new MovieInfoConsumer();
         this.setTitle("Buscar");
         this.setSize(650,800);
-        posterArea1.setSize(180,250);
+        posterArea1.setSize(180,400);
 
         this.setVisible(true);
         this.buscar.addActionListener(this);
@@ -74,7 +74,7 @@ public class searchForm extends JFrame implements ActionListener {
                 URL url = new URL(path);
                 System.out.println(url);
                 BufferedImage image = ImageIO.read(url);
-                Image dimg = image.getScaledInstance(posterArea1.getWidth() - 10
+                Image dimg = image.getScaledInstance(posterArea1.getWidth() - 100
                         , posterArea1.getHeight() - 10,
                         Image.SCALE_SMOOTH);
 

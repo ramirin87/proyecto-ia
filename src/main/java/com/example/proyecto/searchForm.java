@@ -17,6 +17,8 @@ import org.jdesktop.swingx.autocomplete.AutoCompleteDecorator;
 
 public class searchForm extends JFrame implements ActionListener {
     private final MovieInfoConsumer movieRest;
+    private final MotorConsumer motorConsumer;
+    private Movie selectedMovie;
     private JPanel searchPanel;
     private JComboBox<String> lista;
     private JButton buscar;
@@ -30,11 +32,12 @@ public class searchForm extends JFrame implements ActionListener {
 
     public searchForm(){
         this.setContentPane(searchPanel);
+        motorConsumer = new MotorConsumer();
         movieRest = new MovieInfoConsumer();
         this.setTitle("Buscar");
-        this.setSize(650,800);
+        this.setSize(650,1000);
         posterArea1.setSize(180,400);
-
+        this.enviarPuntos.addActionListener(this);
         this.setVisible(true);
         this.buscar.addActionListener(this);
         ManagerMovie.getInstance().movies.stream().sorted(Comparator
@@ -51,9 +54,23 @@ public class searchForm extends JFrame implements ActionListener {
                     .filter( x -> x.title.equals(lista.getSelectedItem())).findFirst().orElse(null);
             if (movie != null) {
                 try {
+                    selectedMovie = movie;
                     setMovieArea(posterArea1, puntos1, title1, genres1, director, rate, movie);
                 } catch (IOException ex) {
                     ex.printStackTrace();
+                }
+            }
+        }
+
+        if (e.getSource() == enviarPuntos) {
+            if  (ManagerMovie.getInstance().selectedUser != null) {
+                if (puntos1.getSelectedItem() == "like") {
+                    motorConsumer.sendReview(ManagerMovie.getInstance().selectedUser
+                        .userName, selectedMovie.id, true);
+                }
+                if (puntos1.getSelectedItem() == "dislike") {
+                    motorConsumer.sendReview(ManagerMovie.getInstance().selectedUser
+                        .userName, selectedMovie.id, true);
                 }
             }
         }
@@ -86,12 +103,8 @@ public class searchForm extends JFrame implements ActionListener {
             }
 
             combo.addItem("<Seleccione un valor>");
-            combo.addItem("0");
-            combo.addItem("1");
-            combo.addItem("2");
-            combo.addItem("3");
-            combo.addItem("4");
-            combo.addItem("5");
+            combo.addItem("like");
+            combo.addItem("dislike");
 
         } catch (Exception ex) {
             System.out.println(ex.getMessage());

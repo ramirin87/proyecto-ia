@@ -9,6 +9,7 @@ import java.util.Comparator;
 import java.util.Objects;
 
 public class userForm extends JFrame implements ActionListener {
+    private final MotorConsumer motorConsumer;
     private JLabel lblNombre;
     private JTextField nombre;
     private JButton btnAgregar;
@@ -18,6 +19,7 @@ public class userForm extends JFrame implements ActionListener {
     private JMenu userMen;
 
     public userForm(JMenu userTop){
+        motorConsumer = new MotorConsumer();
         this.setContentPane(userPanel);
         userMen = userTop;
         this.setTitle("Insertar Usuario");
@@ -38,10 +40,13 @@ public class userForm extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == btnAgregar && nombre.getText().trim().length() > 0) {
             var user = new User(nombre.getText().trim());
-            ManagerMovie.getInstance().users.add(user);
-            ManagerMovie.getInstance().users.forEach(us -> {
-                usuarios.addItem(us.userName);
-            });
+            if (motorConsumer.sendNewUser(user.userName)) {
+                ManagerMovie.getInstance().users.add(user);
+                ManagerMovie.getInstance().users.forEach(us -> {
+                    usuarios.addItem(us.userName);
+                });
+            }
+
 
         }
         if (e.getSource() == selecciona) {

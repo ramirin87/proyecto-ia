@@ -20,6 +20,8 @@ import java.util.Random;
 
 public class mainForm extends JFrame implements ActionListener {
     MovieInfoConsumer movieRest;
+    MotorConsumer motorConsumer;
+    List<Movie> selectedMovies;
     private JPanel mainPanel;
     private JPanel movie1;
     private JLabel title1;
@@ -42,6 +44,7 @@ public class mainForm extends JFrame implements ActionListener {
     private JMenuItem crearUsuario;
     private JMenuItem buscar;
     private JMenuItem recomend;
+    private JMenuItem cargarRecomend;
     private JMenuBar topBar;
     private JMenu userMenu;
     private JMenu recomendacion;
@@ -54,6 +57,7 @@ public class mainForm extends JFrame implements ActionListener {
 
     public mainForm() {
         movieRest = new MovieInfoConsumer();
+        motorConsumer = new MotorConsumer();
         setContentPane(mainPanel);
         setTitle("Proyecto IA Grupo 4");
         setSize(1200,700);
@@ -65,12 +69,15 @@ public class mainForm extends JFrame implements ActionListener {
         userTop.addSeparator();
         buscarTop.addActionListener(this);
         recomendacion = new JMenu("Motor");
-        recomendacion.addActionListener(this);
         crearUsuario = new JMenuItem("Crear usuario");
         buscar = new JMenuItem("Buscar Título");
-        recomend = new JMenuItem("Generar Recomedación");
+        recomend = new JMenuItem("Mandar Reviews");
+        cargarRecomend = new JMenuItem("Cargar Recomendacion");
+        cargarRecomend.addActionListener(this);
+        recomend.addActionListener(this);
         crearUsuario.addActionListener(this);
         buscar.addActionListener(this);
+        recomendacion.add(cargarRecomend);
         recomendacion.add(recomend);
         userMenu.add(crearUsuario);
         buscarTop.add(buscar);
@@ -112,11 +119,15 @@ public class mainForm extends JFrame implements ActionListener {
         ManagerMovie.getInstance().movies = sort.stream().sorted(Comparator
                 .comparing(Movie::getIMDB_Score).reversed())
                 .toList();
-        System.out.println(Utils.BuildCSV(ManagerMovie.getInstance().movies));
+        if(motorConsumer.uploadFile(Utils.BuildCSV(ManagerMovie.getInstance().movies))) {
+            System.out.println("Cargo el archivo");
+        }
+
         LoadRandomMovies();
     }
 
-    void LoadRandomMovies() {
+    void LoadRandomMovies() throws IOException {
+        selectedMovies = new ArrayList<>();
         Random random = new Random();
         int i = 0;
         while (i < 3) {
@@ -124,35 +135,15 @@ public class mainForm extends JFrame implements ActionListener {
             var movie = ManagerMovie.getInstance().movies.get(index);
             switch (i){
                 case 0: {
-
-                    var path = movieRest.getProductAsJson(movie.title);
-                    try {
-                        setMovieArea(path,posterArea1,puntos1,title1,genres1, movie);
-
-                    } catch (Exception exp) {
-                        exp.printStackTrace();
-                    }
+                    setMovieArea(posterArea1,puntos1,title1,genres1, movie);
                     break;
                 }
                 case 1: {
-                    var path = movieRest.getProductAsJson(movie.title);
-                    try {
-                        setMovieArea(path,posterArea2,puntos2,title2,genres2,movie);
-
-                    } catch (Exception exp) {
-
-                        exp.printStackTrace();
-                    }
+                    setMovieArea(posterArea2,puntos2,title2,genres2,movie);
                     break;
                 }
                 case 2: {
-                    var path = movieRest.getProductAsJson(movie.title);
-                    try {
-                        setMovieArea(path,posterArea3,puntos3,title3,genres3,movie);
-
-                    } catch (Exception exp) {
-                        exp.printStackTrace();
-                    }
+                    setMovieArea(posterArea3,puntos3,title3,genres3,movie);
                     break;
                 }
             }
@@ -160,33 +151,34 @@ public class mainForm extends JFrame implements ActionListener {
         }
     }
 
-    private void setMovieArea(String path, JPanel panel, JComboBox<String> combo, JLabel title, JLabel genres, Movie movie) throws IOException {
+    private void setMovieArea(JPanel panel, JComboBox<String> combo, JLabel title, JLabel genres, Movie movie) throws IOException {
         panel.removeAll();
         panel.revalidate();
         panel.repaint();
-        title.setText("Titulo: " + movie.title);
-        genres.setText("Generos: " + movie.genres.toString());
-        if (path != ""){
-            URL url = new URL(path);
-            System.out.println(url);
-            BufferedImage image = ImageIO.read(url);
-            Image dimg = image.getScaledInstance(posterArea1.getWidth() - 10
+        selectedMovies.add(movie);
+        var path = movieRest.getProductAsJson(movie.title);
+        if (!path.isEmpty()) {
+            title.setText("Titulo: " + movie.title);
+            genres.setText("Generos: " + movie.genres.toString());
+            if (path != ""){
+                URL url = new URL(path);
+                System.out.println(url);
+                BufferedImage image = ImageIO.read(url);
+                Image dimg = image.getScaledInstance(posterArea1.getWidth() - 10
                     , posterArea1.getHeight() - 10,
                     Image.SCALE_SMOOTH);
 
-            JLabel label = new JLabel(new ImageIcon(dimg));
+                JLabel label = new JLabel(new ImageIcon(dimg));
 
-            panel.add(label, new GridConstraints());
-            label.setVisible(true);
+                panel.add(label, new GridConstraints());
+                label.setVisible(true);
+            }
+            combo.removeAllItems();
+            combo.addItem("<Seleccione un valor>");
+            combo.addItem("like");
+            combo.addItem("dislike");
         }
 
-        combo.addItem("<Seleccione un valor>");
-        combo.addItem("0");
-        combo.addItem("1");
-        combo.addItem("2");
-        combo.addItem("3");
-        combo.addItem("4");
-        combo.addItem("5");
     }
 
     @Override
@@ -199,6 +191,58 @@ public class mainForm extends JFrame implements ActionListener {
         if (e.getSource() == buscar) {
             System.out.println("Buscar");
             new searchForm();
+        }
+
+        if (e.getSource() == recomend) {
+            System.out.println("Mandar Recomendacion");
+            mandarRecomendacion(puntos1,0);
+            mandarRecomendacion(puntos2,1);
+            mandarRecomendacion(puntos3,2);
+        }
+
+        if(e.getSource() == cargarRecomend) {
+            if (ManagerMovie.getInstance().selectedUser != null) {
+                var lista = motorConsumer
+                    .getRecomendation(ManagerMovie.getInstance().selectedUser.userName);
+                selectedMovies = new ArrayList<>();
+                selectedMovies.add(ManagerMovie.getInstance().movies.stream()
+                    .filter(movie -> movie.id.equals(lista.get(0))).findFirst().orElse(null));
+                selectedMovies.add(ManagerMovie.getInstance().movies.stream()
+                    .filter(movie -> movie.id.equals(lista.get(1))).findFirst().orElse(null));
+                selectedMovies.add(ManagerMovie.getInstance().movies.stream()
+                    .filter(movie -> movie.id.equals(lista.get(2))).findFirst().orElse(null));
+                try {
+                    setMovieArea(posterArea1,puntos1,title1,genres1, selectedMovies.get(0));
+                    setMovieArea(posterArea2,puntos2,title2,genres2, selectedMovies.get(1));
+                    setMovieArea(posterArea3,puntos3,title3,genres3, selectedMovies.get(2));
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+
+
+
+
+            } else {
+                System.out.println("cargue random top 25");
+                try {
+                    LoadRandomMovies();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+    }
+
+    public void mandarRecomendacion(JComboBox puntos, int order){
+        if  (ManagerMovie.getInstance().selectedUser != null) {
+            if (puntos.getSelectedItem() == "like") {
+                motorConsumer.sendReview(ManagerMovie.getInstance().selectedUser
+                    .userName, selectedMovies.get(order).id, true);
+            }
+            if (puntos.getSelectedItem() == "dislike") {
+                motorConsumer.sendReview(ManagerMovie.getInstance().selectedUser
+                    .userName, selectedMovies.get(order).id, false);
+            }
         }
     }
 

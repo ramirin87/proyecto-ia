@@ -1,0 +1,10 @@
+
+m
+java:S1104"RMake movies a static final constant or non-public and provide accessors if needed.(òöªâıÿÿÿÿ
+l
+java:S1104	"QMake users a static final constant or non-public and provide accessors if needed.(÷ÖåÅşÿÿÿÿ
+s
+java:S1104
+"XMake selectedUser a static final constant or non-public and provide accessors if needed.(éÉÍùÿÿÿÿ
+N
+java:S2168"9Remove this dangerous instance of double-checked locking.( – 8

@@ -35,7 +35,7 @@ public class searchForm extends JFrame implements ActionListener {
         motorConsumer = new MotorConsumer();
         movieRest = new MovieInfoConsumer();
         this.setTitle("Buscar");
-        this.setSize(650,1000);
+        this.setSize(650,600);
         posterArea1.setSize(180,400);
         this.enviarPuntos.addActionListener(this);
         this.setVisible(true);
@@ -64,6 +64,7 @@ public class searchForm extends JFrame implements ActionListener {
 
         if (e.getSource() == enviarPuntos) {
             if  (ManagerMovie.getInstance().selectedUser != null) {
+                System.out.println("Mande review");
                 if (puntos1.getSelectedItem() == "like") {
                     motorConsumer.sendReview(ManagerMovie.getInstance().selectedUser
                         .userName, selectedMovie.id, true);
@@ -91,7 +92,7 @@ public class searchForm extends JFrame implements ActionListener {
                 URL url = new URL(path);
                 System.out.println(url);
                 BufferedImage image = ImageIO.read(url);
-                Image dimg = image.getScaledInstance(posterArea1.getWidth() - 100
+                Image dimg = image.getScaledInstance(posterArea1.getWidth() - 10
                         , posterArea1.getHeight() - 10,
                         Image.SCALE_SMOOTH);
 
@@ -102,6 +103,7 @@ public class searchForm extends JFrame implements ActionListener {
                 label.setVisible(true);
             }
 
+            combo.removeAllItems();
             combo.addItem("<Seleccione un valor>");
             combo.addItem("like");
             combo.addItem("dislike");

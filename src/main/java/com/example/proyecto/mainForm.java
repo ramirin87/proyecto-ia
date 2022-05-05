@@ -1,5 +1,8 @@
 package com.example.proyecto;
 
+import static javax.swing.JOptionPane.ERROR_MESSAGE;
+import static javax.swing.JOptionPane.showMessageDialog;
+
 import com.intellij.uiDesigner.core.GridConstraints;
 import com.opencsv.CSVReader;
 import javax.imageio.ImageIO;
@@ -22,6 +25,7 @@ public class mainForm extends JFrame implements ActionListener {
     MovieInfoConsumer movieRest;
     MotorConsumer motorConsumer;
     List<Movie> selectedMovies;
+    List<Integer> randomSelects;
     private JPanel mainPanel;
     private JPanel movie1;
     private JLabel title1;
@@ -38,9 +42,6 @@ public class mainForm extends JFrame implements ActionListener {
     private JComboBox<String> puntos1;
     private JComboBox<String> puntos2;
     private JComboBox<String> puntos3;
-    private JButton enviar1;
-    private JButton enviar2;
-    private JButton enviar3;
     private JMenuItem crearUsuario;
     private JMenuItem buscar;
     private JMenuItem recomend;
@@ -101,7 +102,11 @@ public class mainForm extends JFrame implements ActionListener {
 
     }
 
+
     void loadData(String filePath) throws FileNotFoundException, IOException {
+        JOptionPane.showMessageDialog(mainPanel, "El Motor se realizó con Naive Bayes, " +
+                "por lo que necesita al menos un like y un dislike para funcionar.",
+            "Advertencia", JOptionPane.WARNING_MESSAGE);
         ArrayList<Movie> data = new ArrayList<>();
         CSVReader reader = new CSVReader(new FileReader(filePath));
         List<String[]> lines = reader.readAll();
@@ -128,26 +133,30 @@ public class mainForm extends JFrame implements ActionListener {
 
     void LoadRandomMovies() throws IOException {
         selectedMovies = new ArrayList<>();
+        randomSelects = new ArrayList<>();
         Random random = new Random();
         int i = 0;
         while (i < 3) {
             int index = random.nextInt(25);
-            var movie = ManagerMovie.getInstance().movies.get(index);
-            switch (i){
-                case 0: {
-                    setMovieArea(posterArea1,puntos1,title1,genres1, movie);
-                    break;
+            if (!randomSelects.contains(index)) {
+                randomSelects.add(index);
+                var movie = ManagerMovie.getInstance().movies.get(index);
+                switch (i) {
+                    case 0: {
+                        setMovieArea(posterArea1, puntos1, title1, genres1, movie);
+                        break;
+                    }
+                    case 1: {
+                        setMovieArea(posterArea2, puntos2, title2, genres2, movie);
+                        break;
+                    }
+                    case 2: {
+                        setMovieArea(posterArea3, puntos3, title3, genres3, movie);
+                        break;
+                    }
                 }
-                case 1: {
-                    setMovieArea(posterArea2,puntos2,title2,genres2,movie);
-                    break;
-                }
-                case 2: {
-                    setMovieArea(posterArea3,puntos3,title3,genres3,movie);
-                    break;
-                }
+                i++;
             }
-            i++;
         }
     }
 

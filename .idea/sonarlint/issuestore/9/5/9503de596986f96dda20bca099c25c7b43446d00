@@ -1,0 +1,13 @@
+
+a
+java:S2259&"FA "NullPointerException" could be thrown; "getBody()" can return null.(®Ζλώÿÿÿÿ
+a
+java:S2259K"FA "NullPointerException" could be thrown; "getBody()" can return null.(β“²ÿÿÿÿÿ
+a
+java:S2259="FA "NullPointerException" could be thrown; "getBody()" can return null.(όοτωÿÿÿÿ
+\
+java:S1126&"AReplace this if-then-else statement by a single return statement.(®Ζλώÿÿÿÿ
+\
+java:S1126="AReplace this if-then-else statement by a single return statement.(όοτωÿÿÿÿ
+\
+java:S1126K"AReplace this if-then-else statement by a single return statement.(β“²ÿÿÿÿÿ

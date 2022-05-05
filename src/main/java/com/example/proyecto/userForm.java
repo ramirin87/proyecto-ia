@@ -42,6 +42,7 @@ public class userForm extends JFrame implements ActionListener {
             var user = new User(nombre.getText().trim());
             if (motorConsumer.sendNewUser(user.userName)) {
                 ManagerMovie.getInstance().users.add(user);
+                usuarios.removeAllItems();
                 ManagerMovie.getInstance().users.forEach(us -> {
                     usuarios.addItem(us.userName);
                 });
